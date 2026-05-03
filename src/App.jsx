@@ -15,12 +15,26 @@ export default function StairvilleWebsite() {
       if (event.key === "Escape") {
         setSelectedGalleryItem(null);
         setSelectedGalleryImage(0);
+        setThumbnailPage(0);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (!selectedGalleryItem) {
+      document.body.style.overflow = "";
+      return undefined;
+    }
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedGalleryItem]);
 
   useEffect(() => {
     const servicesSection = document.getElementById("services");
@@ -454,6 +468,22 @@ export default function StairvilleWebsite() {
     { label: "Contact", href: "#contact" }
   ];
 
+  const resetGallery = () => {
+    setSelectedGalleryItem(null);
+    setSelectedGalleryImage(0);
+    setThumbnailPage(0);
+  };
+
+  const openGallery = (item) => {
+    setSelectedGalleryItem(item);
+    setSelectedGalleryImage(0);
+    setThumbnailPage(0);
+  };
+
+  const scrollToSection = (href) => {
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const showPreviousGalleryImage = () => {
     if (!selectedGalleryItem) {
       return;
@@ -494,72 +524,106 @@ export default function StairvilleWebsite() {
     setThumbnailPage(Math.floor(index / thumbnailsPerPage));
   };
 
+  const handleGalleryTouchStart = (event) => {
+    touchStartX.current = event.changedTouches[0].screenX;
+  };
+
+  const handleGalleryTouchEnd = (event) => {
+    touchEndX.current = event.changedTouches[0].screenX;
+    const distance = touchStartX.current - touchEndX.current;
+
+    if (Math.abs(distance) < 40) {
+      return;
+    }
+
+    if (distance > 0) {
+      showNextGalleryImage();
+      return;
+    }
+
+    showPreviousGalleryImage();
+  };
+
   return (
     <div className="min-h-screen bg-neutral-950 text-white">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/85 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
-          <a href="#home" className="flex items-center gap-3">
-            <img
-              src={logoSrc}
-              alt="Stairville Logo"
-              className="h-20 w-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.35)]"
-            />
-            <div>
-              <div className="text-3xl font-semibold tracking-wide">{site.company}</div>
-              <div className="text-lg uppercase tracking-[0.35em] text-neutral-400">
-                Custom Staircases
-              </div>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-10 md:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-xl text-neutral-300 transition hover:text-white"
-              >
-                {item.label}
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center justify-between gap-4">
+              <a href="#home" className="flex min-w-0 items-center gap-3">
+                <img
+                  src={logoSrc}
+                  alt="Stairville Logo"
+                  className="h-14 w-auto shrink-0 object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.35)] sm:h-16 lg:h-20"
+                />
+                <div className="min-w-0">
+                  <div className="text-2xl font-semibold tracking-wide sm:text-3xl">
+                    {site.company}
+                  </div>
+                  <div className="text-xs uppercase tracking-[0.28em] text-neutral-400 sm:text-sm lg:text-lg lg:tracking-[0.35em]">
+                    Custom Staircases
+                  </div>
+                </div>
               </a>
-            ))}
-          </nav>
 
-          <button
-            type="button"
-            onClick={() =>
-              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="rounded-2xl border border-amber-300/30 bg-amber-300/10 px-8 py-4 text-xl font-medium text-amber-200 transition hover:bg-amber-300/20"
-          >
-            Request a Quote
-          </button>
+              <button
+                type="button"
+                onClick={() => scrollToSection("#contact")}
+                className="shrink-0 rounded-2xl border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-sm font-medium text-amber-200 transition hover:bg-amber-300/20 sm:px-5 lg:hidden"
+              >
+                Quote
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+              <nav className="flex flex-wrap gap-2 pb-1 lg:items-center lg:gap-8 lg:pb-0">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="whitespace-nowrap rounded-full border border-white/10 px-3 py-2 text-sm text-neutral-300 transition hover:border-white/20 hover:text-white lg:border-0 lg:px-0 lg:py-0 lg:text-lg"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </nav>
+
+              <button
+                type="button"
+                onClick={() => scrollToSection("#contact")}
+                className="hidden rounded-2xl border border-amber-300/30 bg-amber-300/10 px-6 py-3 text-base font-medium text-amber-200 transition hover:bg-amber-300/20 lg:inline-flex"
+              >
+                Request a Quote
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
       <main>
-        <section id="home" className="relative overflow-hidden scroll-mt-36">
+        <section id="home" className="relative overflow-hidden scroll-mt-48 md:scroll-mt-36">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.14),transparent_30%),radial-gradient(circle_at_left,rgba(255,255,255,0.08),transparent_25%)]" />
-          <div className="mx-auto grid max-w-7xl gap-14 px-6 py-20 lg:grid-cols-2 lg:px-8 lg:py-28">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8 lg:py-28">
             <div className="relative z-10 flex flex-col justify-center">
-              <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-neutral-300">
+              <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-neutral-300 sm:text-sm">
                 Serving {site.location}
               </div>
-              <h1 className="max-w-2xl text-5xl font-semibold leading-tight tracking-tight md:text-6xl">
+              <h1 className="max-w-3xl text-4xl font-semibold leading-[0.96] tracking-tight sm:text-5xl lg:text-6xl">
                 {site.heroTitle}
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-8 text-neutral-300">
+              <p className="mt-5 max-w-xl text-base leading-7 text-neutral-300 sm:text-lg sm:leading-8">
                 {site.heroSubtitle}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
                 <a
                   href="#gallery"
-                  className="rounded-2xl bg-white px-6 py-3 text-sm font-semibold text-neutral-950 transition hover:opacity-90"
+                  className="rounded-2xl bg-white px-6 py-3 text-center text-sm font-semibold text-neutral-950 transition hover:opacity-90"
                 >
                   View Projects
                 </a>
                 <a
                   href={`tel:${site.phone.replace(/[^\d]/g, "")}`}
-                  className="rounded-2xl border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/5"
+                  className="rounded-2xl border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/5"
                 >
                   Call {site.phone}
                 </a>
@@ -568,22 +632,26 @@ export default function StairvilleWebsite() {
 
             <div className="relative z-10">
               <div className="grid gap-4 sm:grid-cols-2">
-                <img
-                  src="/images/floating-stairs (6).jpg"
-                  alt="Modern floating staircase interior"
-                  className="h-72 w-full scale-125 rounded-3xl object-cover object-center shadow-2xl shadow-black/30 sm:h-80"
-                />
-                <img
-                  src="/images/traditional-wood-80-cleaned.png"
-                  alt="Glass and wood staircase project"
-                  className="mt-10 h-72 w-full scale-125 rounded-3xl object-cover object-center shadow-2xl shadow-black/30 sm:h-80"
-                />
+                <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30">
+                  <img
+                    src="/images/floating-stairs (6).jpg"
+                    alt="Modern floating staircase interior"
+                    className="h-56 w-full object-cover object-center transition-transform duration-500 sm:h-72 md:scale-110 lg:h-80 lg:scale-125"
+                  />
+                </div>
+                <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30 sm:mt-8 lg:mt-10">
+                  <img
+                    src="/images/traditional-wood-80-cleaned.png"
+                    alt="Glass and wood staircase project"
+                    className="h-56 w-full object-cover object-center transition-transform duration-500 sm:h-72 md:scale-110 lg:h-80 lg:scale-125"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="about" className="mx-auto max-w-7xl scroll-mt-36 px-6 py-20 lg:px-8">
+        <section id="about" className="mx-auto max-w-7xl scroll-mt-48 px-4 py-16 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">About Stairville</p>
@@ -623,7 +691,7 @@ export default function StairvilleWebsite() {
           </div>
         </section>
 
-        <section id="services" className="mx-auto max-w-7xl scroll-mt-36 px-6 py-4 lg:px-8">
+        <section id="services" className="mx-auto max-w-7xl scroll-mt-48 px-4 py-6 sm:px-6 lg:scroll-mt-36 lg:px-8">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Services</p>
@@ -637,15 +705,15 @@ export default function StairvilleWebsite() {
             {site.services.map((service, index) => (
               <div
                 key={service.title}
-                className={`flex min-h-[320px] flex-col rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-xl shadow-black/10 transition-all duration-[1400ms] ease-out ${
+                className={`flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-xl shadow-black/10 transition-all duration-[1400ms] ease-out sm:min-h-[320px] sm:p-8 ${
                   servicesVisible ? "opacity-100" : "opacity-0"
                 }`}
                 style={{ transitionDelay: `${index * 450}ms` }}
               >
-                <h3 className="flex min-h-[7rem] items-center justify-center text-2xl font-semibold leading-tight md:text-[1.75rem]">
+                <h3 className="flex min-h-[5rem] items-center justify-center text-xl font-semibold leading-tight sm:min-h-[7rem] sm:text-2xl md:text-[1.75rem]">
                   {service.title}
                 </h3>
-                <p className="mx-auto mt-4 max-w-[16rem] text-base leading-8 text-neutral-300">
+                <p className="mx-auto mt-4 max-w-[16rem] text-sm leading-7 text-neutral-300 sm:text-base sm:leading-8">
                   {service.text}
                 </p>
               </div>
@@ -653,7 +721,7 @@ export default function StairvilleWebsite() {
           </div>
         </section>
 
-        <section id="gallery" className="mx-auto max-w-7xl scroll-mt-36 px-6 py-20 lg:px-8">
+        <section id="gallery" className="mx-auto max-w-7xl scroll-mt-48 px-4 py-16 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:px-8">
           <div className="mb-10">
             <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Gallery</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
@@ -664,28 +732,24 @@ export default function StairvilleWebsite() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-5 md:grid-cols-2">
             {site.gallery.map((item) => (
               <button
                 key={item.title}
                 type="button"
-                onClick={() => {
-                  setSelectedGalleryItem(item);
-                  setSelectedGalleryImage(0);
-                  setThumbnailPage(0);
-                }}
+                onClick={() => openGallery(item)}
                 className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 text-left transition hover:-translate-y-1 hover:border-amber-300/30 hover:bg-white/[0.07]"
               >
-                <div className="relative h-80 w-full overflow-hidden">
+                <div className="relative h-60 w-full overflow-hidden sm:h-72 lg:h-80">
                   <img
                     src={item.image}
                     alt={item.title}
                     className={`absolute inset-0 h-full w-full ${item.coverClassName ?? "object-cover"}`}
                   />
                 </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
+                <div className="p-5 sm:p-6">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                    <h3 className="text-lg font-semibold sm:text-xl">{item.title}</h3>
                     <span className="rounded-full border border-white/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-neutral-400">
                       View Gallery
                     </span>
@@ -699,32 +763,28 @@ export default function StairvilleWebsite() {
 
         {selectedGalleryItem && (
           <div
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-sm"
-            onClick={() => {
-              setSelectedGalleryItem(null);
-              setSelectedGalleryImage(0);
-              setThumbnailPage(0);
-            }}
+            className="fixed inset-0 z-[70] bg-black/85 px-3 py-4 backdrop-blur-sm sm:px-4 sm:py-6"
+            onClick={resetGallery}
           >
             <div
-              className="relative w-full max-w-6xl rounded-[2rem] border border-white/10 bg-neutral-950 shadow-2xl shadow-black/50"
+              className="relative mx-auto flex h-full w-full max-w-6xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-neutral-950 shadow-2xl shadow-black/50"
               onClick={(event) => event.stopPropagation()}
             >
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedGalleryItem(null);
-                  setSelectedGalleryImage(0);
-                  setThumbnailPage(0);
-                }}
-                className="absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 px-3 py-2 text-sm text-white transition hover:bg-black/60"
+                onClick={resetGallery}
+                className="absolute right-4 top-4 z-20 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm text-white transition hover:bg-black/80"
               >
                 Close
               </button>
 
-              <div className="grid gap-0 lg:grid-cols-[1.3fr_0.7fr]">
+              <div className="grid h-full min-h-0 gap-0 lg:grid-cols-[1.3fr_0.7fr]">
                 <div className="border-b border-white/10 bg-black/30 lg:border-b-0 lg:border-r">
-                  <div className="flex h-[420px] items-center justify-center overflow-hidden rounded-t-[2rem] p-4 lg:h-[620px] lg:rounded-l-[2rem] lg:rounded-tr-none lg:p-6">
+                  <div
+                    className="flex h-[280px] items-center justify-center overflow-hidden rounded-t-[2rem] p-4 sm:h-[360px] lg:h-[620px] lg:rounded-l-[2rem] lg:rounded-tr-none lg:p-6"
+                    onTouchStart={handleGalleryTouchStart}
+                    onTouchEnd={handleGalleryTouchEnd}
+                  >
                     <img
                       src={selectedGalleryItem.images[selectedGalleryImage]}
                       alt={selectedGalleryItem.title}
@@ -733,14 +793,16 @@ export default function StairvilleWebsite() {
                   </div>
                 </div>
 
-                <div className="flex flex-col p-6 md:p-8">
+                <div className="flex min-h-0 flex-col overflow-y-auto p-5 pt-16 sm:p-6 sm:pt-16 md:p-8 md:pt-16">
                   <p className="text-sm uppercase tracking-[0.3em] text-amber-300">
                     Project Gallery
                   </p>
-                  <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
                     {selectedGalleryItem.title}
                   </h3>
-                  <p className="mt-4 text-neutral-300">{selectedGalleryItem.description}</p>
+                  <p className="mt-4 text-sm leading-7 text-neutral-300 sm:text-base">
+                    {selectedGalleryItem.description}
+                  </p>
 
                   <div className="mt-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
@@ -754,33 +816,33 @@ export default function StairvilleWebsite() {
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-3">
                       {visibleThumbnails.map((image, index) => {
                         const actualIndex = thumbnailPage * thumbnailsPerPage + index;
 
                         return (
-                        <button
-                          key={image}
-                          type="button"
-                          onClick={() => selectGalleryImage(actualIndex)}
-                          className={`overflow-hidden rounded-2xl border ${
-                            selectedGalleryImage === actualIndex
-                              ? "border-amber-300"
-                              : "border-white/10"
-                          }`}
-                        >
-                          <img
-                            src={image}
-                            alt={`${selectedGalleryItem.title} ${actualIndex + 1}`}
-                            className="h-24 w-full object-cover"
-                          />
-                        </button>
+                          <button
+                            key={image}
+                            type="button"
+                            onClick={() => selectGalleryImage(actualIndex)}
+                            className={`overflow-hidden rounded-2xl border ${
+                              selectedGalleryImage === actualIndex
+                                ? "border-amber-300"
+                                : "border-white/10"
+                            }`}
+                          >
+                            <img
+                              src={image}
+                              alt={`${selectedGalleryItem.title} ${actualIndex + 1}`}
+                              className="h-20 w-full object-cover sm:h-24"
+                            />
+                          </button>
                         );
                       })}
                     </div>
                   </div>
 
-                  <div className="mt-6 flex gap-3">
+                  <div className="mt-6 grid grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={showPreviousGalleryImage}
@@ -802,8 +864,8 @@ export default function StairvilleWebsite() {
           </div>
         )}
 
-        <section id="contact" className="mx-auto max-w-7xl scroll-mt-36 px-6 pb-24 lg:px-8">
-          <div className="grid gap-8 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/8 to-white/4 p-8 md:grid-cols-[1fr_0.9fr] md:p-10">
+        <section id="contact" className="mx-auto max-w-7xl scroll-mt-48 px-4 pb-20 sm:px-6 sm:pb-24 lg:scroll-mt-36 lg:px-8">
+          <div className="grid gap-8 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/8 to-white/4 p-6 sm:p-8 md:grid-cols-[1fr_0.9fr] md:p-10">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Contact</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">
