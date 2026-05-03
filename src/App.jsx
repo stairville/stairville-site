@@ -575,13 +575,13 @@ export default function StairvilleWebsite() {
               </button>
             </div>
 
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
-              <nav className="flex flex-wrap gap-2 pb-1 lg:items-center lg:gap-8 lg:pb-0">
+            <div className="hidden lg:flex lg:flex-row lg:items-center lg:gap-8">
+              <nav className="lg:flex lg:items-center lg:gap-8">
                 {navItems.map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    className="whitespace-nowrap rounded-full border border-white/10 px-3 py-2 text-sm text-neutral-300 transition hover:border-white/20 hover:text-white lg:border-0 lg:px-0 lg:py-0 lg:text-lg"
+                    className="whitespace-nowrap text-lg text-neutral-300 transition hover:text-white"
                   >
                     {item.label}
                   </a>
@@ -631,7 +631,7 @@ export default function StairvilleWebsite() {
             </div>
 
             <div className="relative z-10">
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:items-start">
                 <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30">
                   <img
                     src="/images/floating-stairs (6).jpg"
@@ -639,7 +639,7 @@ export default function StairvilleWebsite() {
                     className="h-56 w-full object-cover object-center transition-transform duration-500 sm:h-72 md:scale-110 lg:h-80 lg:scale-125"
                   />
                 </div>
-                <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30 sm:mt-8 lg:mt-10">
+                <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30 sm:mt-8 lg:-ml-12 lg:mt-16 xl:-ml-16 xl:mt-20">
                   <img
                     src="/images/traditional-wood-80-cleaned.png"
                     alt="Glass and wood staircase project"
@@ -705,15 +705,15 @@ export default function StairvilleWebsite() {
             {site.services.map((service, index) => (
               <div
                 key={service.title}
-                className={`flex min-h-[280px] flex-col rounded-3xl border border-white/10 bg-white/5 p-6 text-center shadow-xl shadow-black/10 transition-all duration-[1400ms] ease-out sm:min-h-[320px] sm:p-8 ${
+                className={`flex min-h-[230px] flex-col rounded-3xl border border-white/10 bg-white/5 p-5 text-center shadow-xl shadow-black/10 transition-all duration-[1400ms] ease-out sm:min-h-[320px] sm:p-8 ${
                   servicesVisible ? "opacity-100" : "opacity-0"
                 }`}
                 style={{ transitionDelay: `${index * 450}ms` }}
               >
-                <h3 className="flex min-h-[5rem] items-center justify-center text-xl font-semibold leading-tight sm:min-h-[7rem] sm:text-2xl md:text-[1.75rem]">
+                <h3 className="flex min-h-[4.5rem] items-center justify-center text-[1.35rem] font-semibold leading-tight sm:min-h-[7rem] sm:text-2xl md:text-[1.75rem]">
                   {service.title}
                 </h3>
-                <p className="mx-auto mt-4 max-w-[16rem] text-sm leading-7 text-neutral-300 sm:text-base sm:leading-8">
+                <p className="mx-auto mt-3 max-w-[16rem] text-base leading-7 text-neutral-300 sm:mt-4 sm:text-base sm:leading-8">
                   {service.text}
                 </p>
               </div>
