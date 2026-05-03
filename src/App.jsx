@@ -2,11 +2,22 @@ import { useEffect, useRef, useState } from "react";
 
 export default function StairvilleWebsite() {
   const thumbnailsPerPage = 9;
+  const mobileHeroImages = [
+    {
+      src: "/images/floating-stairs-6-noglare.png",
+      alt: "Modern floating staircase interior"
+    },
+    {
+      src: "/images/traditional-wood-80-cleaned.png",
+      alt: "Traditional wood staircase project"
+    }
+  ];
   const [formStatus, setFormStatus] = useState({ state: "idle", message: "" });
   const [selectedGalleryItem, setSelectedGalleryItem] = useState(null);
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(0);
   const [thumbnailPage, setThumbnailPage] = useState(0);
   const [servicesVisible, setServicesVisible] = useState(false);
+  const [mobileHeroImageIndex, setMobileHeroImageIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
@@ -57,6 +68,14 @@ export default function StairvilleWebsite() {
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    const rotationInterval = window.setInterval(() => {
+      setMobileHeroImageIndex((prev) => (prev + 1) % mobileHeroImages.length);
+    }, 3000);
+
+    return () => window.clearInterval(rotationInterval);
+  }, [mobileHeroImages.length]);
 
   const logoSvg =
     '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="7in" height="9in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 7000 9000" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><style type="text/css"><![CDATA[ .fil12 {fill:#BDBFC1} .fil9 {fill:#A9ABAE} .fil13 {fill:#727376} .fil0 {fill:#282829} .fil1 {fill:black} .fil4 {fill:url(#id1)} .fil3 {fill:url(#id2)} .fil2 {fill:url(#id3)} .fil7 {fill:url(#id4)} .fil10 {fill:url(#id5)} .fil11 {fill:url(#id6)} .fil8 {fill:url(#id7)} .fil6 {fill:url(#id8)} .fil5 {fill:url(#id9)} ]]></style><linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="1332.95" y1="6870.96" x2="5681.57" y2="6870.96"><stop offset="0" style="stop-opacity:1; stop-color:#727376"/><stop offset="0.509804" style="stop-opacity:1; stop-color:#A9ABAE"/><stop offset="1" style="stop-opacity:1; stop-color:#727376"/></linearGradient><linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="783.03" y1="7350.72" x2="6231.49" y2="7350.72"><stop offset="0" style="stop-opacity:1; stop-color:#727376"/><stop offset="0.501961" style="stop-opacity:1; stop-color:#A9ABAD"/><stop offset="1" style="stop-opacity:1; stop-color:#727376"/></linearGradient><linearGradient id="id3" gradientUnits="userSpaceOnUse" xlink:href="#id2" x1="324.3" y1="7901.73" x2="6690.22" y2="7901.73"></linearGradient><linearGradient id="id4" gradientUnits="userSpaceOnUse" x1="3511.01" y1="6394.56" x2="5616.08" y2="6394.56"><stop offset="0" style="stop-opacity:1; stop-color:#727376"/><stop offset="1" style="stop-opacity:1; stop-color:#A9ABAD"/></linearGradient><linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="5299.25" y1="5732.88" x2="3332.04" y2="5870.75"><stop offset="0" style="stop-opacity:1; stop-color:#818081"/><stop offset="1" style="stop-opacity:1; stop-color:#FEFEFE"/></linearGradient><linearGradient id="id6" gradientUnits="userSpaceOnUse" x1="1812.24" y1="2103.51" x2="5474.62" y2="1561.16"><stop offset="0" style="stop-opacity:1; stop-color:#606062"/><stop offset="1" style="stop-opacity:1; stop-color:#FEFEFE"/></linearGradient><linearGradient id="id7" gradientUnits="userSpaceOnUse" xlink:href="#id4" x1="3509.21" y1="6395.23" x2="5616.08" y2="6395.23"></linearGradient><linearGradient id="id8" gradientUnits="userSpaceOnUse" x1="4289.59" y1="5558.06" x2="1682.77" y2="5841.06"><stop offset="0" style="stop-opacity:1; stop-color:#5E5E5E"/><stop offset="1" style="stop-opacity:1; stop-color:#969696"/></linearGradient><linearGradient id="id9" gradientUnits="userSpaceOnUse" xlink:href="#id6" x1="2635.39" y1="3316.3" x2="5963.99" y2="5498.21"></linearGradient></defs><g id="Layer_x0020_1"><g id="_2456872571728"><path class="fil1" d="M440.76 2609.53l-15.12 4418.5 -171.53 8.3 -4.11 347.5 3257.52 1471.85 0 0 0 0 3054.1 -1388.91 188.37 -72.44 -2.03 -345.56 -184.9 -5.55 15.14 -4449.38c6.52,-1913.95 -1626.67,-2505.77 -3217.54,-2445.39 -1476.27,56.03 -2925.56,623.79 -2919.92,2461.07z"/><polygon class="fil2" points="326.95,7115.36 3499.77,8219.58 6687.57,7115.36 6690.22,7317.31 3499.77,8688.09 3499.77,8688.09 3499.76,8688.09 324.3,7317.31 "/><polygon class="fil3" points="785.67,6822.2 3507.26,7497.91 6228.85,6822.2 6231.49,7024.15 3507.26,7879.24 3507.26,7879.24 3507.26,7879.24 783.03,7024.15 "/><polygon class="fil4" points="1332.95,6565.14 3507.26,6869.34 5681.57,6565.14 5681.57,6744.68 3507.26,7176.78 3507.26,7176.78 3507.26,7176.78 1332.95,6744.68 "/><path class="fil5" d="M5052.11 4706.55c-124.88,259.8 -545.09,501.7 -1032.14,633.03 -219.31,-136.92 -728.57,-432.78 -954.81,-542.64 -38.7,-18.8 -77.55,-41.26 -116.45,-66.8 -0.74,-0.49 -2.5,-1.01 -2.5,-1.01 -1.96,-1.3 -3.65,-3.06 -5.61,-4.37 -368.64,-246.09 -742.23,-765.94 -1053.56,-1071.81 0,0 -12.09,-1164.26 -12.09,-1164.26 0,-7.68 417.88,1.21 781.76,492.45 520.37,702.5 1476.74,782.7 2177.41,1259.37 88.87,60.46 193.54,167.34 228.9,284.46 1.8,5.96 3.26,12.41 4.69,18.41 12.85,53.98 10.42,109.03 -15.6,163.16z"/><path class="fil6" d="M2946.21 4729.13c0,0 1.8,0.88 4.83,2.65 26.56,15.54 147.83,100.03 -14.33,268.44 -155.16,161.12 -668.86,245.46 -990.82,399.62 -158.44,75.87 -270.45,213.36 -270.45,340.53 0,83.41 0.35,728.41 0.35,728.41l2136.81 182.59 256.99 -1340.53c43.3,-132.56 -45.85,-204.19 -159.08,-267.65 -244.5,-137.05 -805.73,-286.18 -964.3,-314.07z"/><polygon class="fil7" points="5615.33,6320.77 5615.33,6320.93 4415.22,6518.75 3511.01,6436.29 4530.19,6270.38 "/><polygon class="fil8" points="5615.33,6320.77 5615.33,6320.93 5616.08,6320.8 "/><polygon class="fil9" points="2245.27,6185.28 2245.27,6035.85 3621.04,6098.4 3624.65,6264.17 "/><polygon class="fil9" points="2666.47,5754.87 2666.47,5900.6 3596.75,5948.96 3600.48,5792.57 "/><polygon class="fil9" points="2990.99,5518.43 2990.99,5636.63 3696.05,5667.46 3706.48,5535.69 "/><polygon class="fil9" points="3243.45,5310.85 3243.45,5402.91 4106.92,5397.56 4105.82,5310.85 "/><path class="fil10" d="M3508.64 6438.98l0 -585.79c0,-258.98 212.56,-421.97 356.51,-469.04 610.35,-199.58 1179.84,-508.87 1197.87,-859.19 0,0 2.94,10.33 4.26,15.55 86.74,344.11 34.67,827.99 34.4,1178.15 -0.09,115.92 -57.56,292.23 -244.97,389.9 -169.4,88.28 -115.28,163.5 -150.93,169.96 0,0 -1197.14,160.45 -1197.14,160.45z"/><path class="fil11" d="M4707.13 1386.67l30.53 1244.45c-410.37,-221.38 -1268.17,-55.24 -1742.37,201.2 -617.75,334.06 -813.39,711.86 -1085.54,1036 0,0 -71.19,-178.26 -74.49,-270.59 -7.78,-217.82 -0.33,-532.42 -3.14,-842.52 -3.07,-338.28 64.43,-778.07 441.26,-1007.1 750.4,-456.07 2061.41,-465.46 2433.75,-361.45z"/><path class="fil12" d="M2946.21 4729.13c-69.87,-55.68 -549.45,-496.34 -574.01,-974.43 -48.38,-941.69 1644.95,-1454.37 2365.46,-1123.58 -751.02,-462.09 -2626.92,28.42 -2869.41,745.42 -193.42,571.9 532.2,1056.86 889.8,1255.86 112.19,62.43 188.16,96.72 188.16,96.72z"/><polygon class="fil9" points="4413.68,6501.52 4406.73,7088.83 4209.94,7058.42 4212.6,6706.6 1675.79,6468.79 1675.71,6312.33 "/><polygon class="fil13" points="5615.33,6320.92 5615.33,6809.91 4406.73,7088.83 4413.68,6501.52 "/></g></g></svg>';
@@ -603,8 +622,8 @@ export default function StairvilleWebsite() {
       <main>
         <section id="home" className="relative overflow-hidden scroll-mt-48 md:scroll-mt-36">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.14),transparent_30%),radial-gradient(circle_at_left,rgba(255,255,255,0.08),transparent_25%)]" />
-          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8 lg:py-28">
-            <div className="relative z-10 flex flex-col justify-center">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:gap-10 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8 lg:py-28">
+            <div className="relative z-10 hidden flex-col justify-center lg:flex">
               <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-neutral-300 sm:text-sm">
                 Serving {site.location}
               </div>
@@ -630,13 +649,55 @@ export default function StairvilleWebsite() {
               </div>
             </div>
 
-            <div className="relative z-10">
+            <div className="relative z-20 lg:hidden">
+              <div className="relative h-[24rem] overflow-hidden rounded-[2rem] shadow-2xl shadow-black/40 sm:h-[28rem]">
+                {mobileHeroImages.map((image, index) => (
+                  <img
+                    key={image.src}
+                    src={image.src}
+                    alt={image.alt}
+                    className={`absolute inset-0 h-full w-full object-cover object-[center_70%] transition-opacity duration-700 ${
+                      index === mobileHeroImageIndex ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-black/35 px-4 py-2 text-xs text-neutral-200 backdrop-blur sm:text-sm">
+                    Serving {site.location}
+                  </div>
+                  <h1 className="max-w-[13ch] text-4xl font-semibold leading-[0.95] tracking-tight text-white sm:text-5xl">
+                    {site.heroTitle}
+                  </h1>
+                  <p className="mt-4 max-w-[24rem] text-sm leading-6 text-neutral-200 sm:text-base sm:leading-7">
+                    {site.heroSubtitle}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-col gap-3">
+                <a
+                  href="#gallery"
+                  className="rounded-2xl bg-white px-6 py-3 text-center text-sm font-semibold text-neutral-950 transition hover:opacity-90"
+                >
+                  View Projects
+                </a>
+                <a
+                  href={`tel:${site.phone.replace(/[^\d]/g, "")}`}
+                  className="rounded-2xl border border-white/15 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/5"
+                >
+                  Call {site.phone}
+                </a>
+              </div>
+            </div>
+
+            <div className="relative z-10 hidden lg:order-last lg:mt-0 lg:block">
               <div className="grid gap-4 sm:grid-cols-2 lg:items-start">
                 <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30">
                   <img
-                    src="/images/floating-stairs (6).jpg"
+                    src="/images/floating-stairs-6-noglare.png"
                     alt="Modern floating staircase interior"
-                    className="h-56 w-full object-cover object-center transition-transform duration-500 sm:h-72 md:scale-110 lg:h-80 lg:scale-125"
+                    className="h-56 w-full object-cover object-[center_88%] transition-transform duration-500 sm:h-72 md:scale-110 lg:h-80 lg:scale-125"
                   />
                 </div>
                 <div className="overflow-hidden rounded-3xl shadow-2xl shadow-black/30 sm:mt-8 lg:-ml-12 lg:mt-16 xl:-ml-16 xl:mt-20">
