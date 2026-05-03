@@ -138,7 +138,7 @@ export default function StairvilleWebsite() {
         title: "Traditional Wood Staircase",
         description: "Traditional wood staircases with classic handrails, warm finishes, and timeless detailing.",
         image: "/images/Traditional Wood (60).jpg",
-        coverClassName: "scale-[1.03] object-cover object-[center_78%]",
+        coverClassName: "object-cover object-[center_68%]",
         images: [
           "/images/Traditional (2).jpg",
           "/images/Traditional (3).jpg",
@@ -588,9 +588,9 @@ export default function StairvilleWebsite() {
               <button
                 type="button"
                 onClick={() => scrollToSection("#contact")}
-                className="shrink-0 rounded-2xl border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-sm font-medium text-amber-200 transition hover:bg-amber-300/20 sm:px-5 lg:hidden"
+                className="shrink-0 rounded-2xl border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-xs font-medium text-amber-200 transition hover:bg-amber-300/20 sm:px-5 sm:py-3 sm:text-sm lg:hidden"
               >
-                Quote
+                Request a Quote
               </button>
             </div>
 
@@ -622,7 +622,7 @@ export default function StairvilleWebsite() {
       <main>
         <section id="home" className="relative overflow-hidden scroll-mt-48 md:scroll-mt-36">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.14),transparent_30%),radial-gradient(circle_at_left,rgba(255,255,255,0.08),transparent_25%)]" />
-          <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-12 pt-8 sm:px-6 sm:gap-10 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8 lg:py-28">
+          <div className="mx-auto grid max-w-7xl gap-6 px-4 pb-2 pt-4 sm:px-6 sm:gap-10 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14 lg:px-8 lg:py-28">
             <div className="relative z-10 hidden flex-col justify-center lg:flex">
               <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs text-neutral-300 sm:text-sm">
                 Serving {site.location}
@@ -662,7 +662,7 @@ export default function StairvilleWebsite() {
                   />
                 ))}
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-5">
+                <div className="absolute inset-x-0 bottom-0 px-5 pb-0 pt-20">
                   <div className="mb-4 inline-flex w-fit rounded-full border border-white/10 bg-black/35 px-4 py-2 text-xs text-neutral-200 backdrop-blur sm:text-sm">
                     Serving {site.location}
                   </div>
@@ -675,7 +675,7 @@ export default function StairvilleWebsite() {
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-col gap-3">
+              <div className="mt-16 flex flex-col gap-3">
                 <a
                   href="#gallery"
                   className="rounded-2xl bg-white px-6 py-3 text-center text-sm font-semibold text-neutral-950 transition hover:opacity-90"
@@ -712,7 +712,7 @@ export default function StairvilleWebsite() {
           </div>
         </section>
 
-        <section id="about" className="mx-auto max-w-7xl scroll-mt-48 px-4 py-16 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:px-8">
+        <section id="about" className="mx-auto max-w-7xl scroll-mt-48 px-4 py-4 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-amber-300">About Stairville</p>
